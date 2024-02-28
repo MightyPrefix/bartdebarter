@@ -9,6 +9,7 @@ c.execute(
     """CREATE TABLE IF NOT EXISTS posts
              (id INTEGER PRIMARY KEY AUTOINCREMENT,
               source TEXT,
+              title TEXT,
               image_url TEXT,
               timestamp DATETIME)"""
 )
