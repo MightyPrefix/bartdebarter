@@ -38,7 +38,7 @@ post = next(top_posts, None)
 current_utc_timestamp = datetime.now().timestamp()
 
 if post is None or current_utc_timestamp - post.created_utc > 24 * 3600:
-   print(f"No posts found in the last 24 hours on /r/{SUBREDDIT_NAME}")
+   logging.error(f"No posts found in the last 24 hours on /r/{SUBREDDIT_NAME}")
    sys.exit()
 
 # Get the absolute path of the directory containing the current script
