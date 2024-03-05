@@ -38,19 +38,25 @@ post = next(top_posts, None)
 current_utc_timestamp = datetime.now().timestamp()
 
 if post is None or current_utc_timestamp - post.created_utc > 24 * 3600:
-   logging.error(f"No posts found in the last 24 hours on /r/{SUBREDDIT_NAME}")
-   sys.exit()
+    logging.error(f"No posts found in the last 24 hours on /r/{SUBREDDIT_NAME}")
+    sys.exit()
 
 # Get the absolute path of the directory containing the current script
 script_dir = os.path.dirname(os.path.abspath(__file__))
-db_path = os.path.join(script_dir, '../db/posts.db')
+db_path = os.path.join(script_dir, "../db/posts.db")
+
 
 def handle_gallery_post(post):
-    media_urls = [f"https://i.reddit.it/{item['media_id']}.jpg" for item in post.gallery_data['items']]
+    media_urls = [
+        f"https://i.reddit.it/{item['media_id']}.jpg"
+        for item in post.gallery_data["items"]
+    ]
     return ",".join(media_urls)
+
 
 def handle_video_post(post):
     return post.secure_media["reddit_video"]["fallback_url"]
+
 
 def handle_post(post, conn):
     source = post.permalink
@@ -62,9 +68,9 @@ def handle_post(post, conn):
     # 3. Single asset post (e.g. image or gif) => store the post.url link in the db
 
     # Check the post type and handle accordingly
-    if hasattr(post, 'is_video') and post.is_video:
+    if hasattr(post, "is_video") and post.is_video:
         asset_url = handle_video_post(post)
-    elif hasattr(post, 'is_gallery') and post.is_gallery:
+    elif hasattr(post, "is_gallery") and post.is_gallery:
         asset_url = handle_gallery_post(post)
     else:
         asset_url = post.url
@@ -74,6 +80,7 @@ def handle_post(post, conn):
             "INSERT INTO posts (source, title, asset_url) VALUES (?, ?, ?)",
             (source, title, asset_url),
         )
+
 
 with sqlite3.connect(db_path) as conn:
     handle_post(post, conn)
