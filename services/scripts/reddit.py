@@ -1,8 +1,7 @@
 import os, sys, logging
 import sqlite3
 from dotenv import load_dotenv
-from datetime import datetime, timezone
-from pprint import pprint
+from datetime import datetime
 import praw
 
 # Setup logging
