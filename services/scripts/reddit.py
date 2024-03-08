@@ -58,7 +58,7 @@ def handle_video_post(post):
 
 
 def handle_post(post, conn):
-    source = post.permalink
+    source = f"https://www.reddit.com{post.permalink}"
     title = post.title
 
     # There are 4 different types of posts
